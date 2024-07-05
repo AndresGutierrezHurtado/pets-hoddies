@@ -1,8 +1,61 @@
-# React + Vite
+# Sistema de Información para la Venta de Ropa para Mascotas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un sistema de información diseñado para la venta de ropa para mascotas. El sistema incluye una interfaz de usuario desarrollada con React y Vite, y un servidor que maneja la lógica de negocio y la base de datos SQL con Node.js.
 
-Currently, two official plugins are available:
+## Características
+- Interfaz amigable para la gestión de productos, clientes y pedidos.
+- Catálogo de ropa para mascotas con imágenes y descripciones detalladas.
+- Sistema de autenticación para usuarios administradores y clientes.
+- Gestión de inventario y seguimiento de pedidos.
+- Base de datos SQL para almacenamiento de datos.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Estructura del Proyecto
+
+El proyecto está estructurado en dos principales carpetas: `client` y `server`.
+
+- `client/`: Contiene la aplicación frontend creada con React y Vite.
+  - `public/`: Archivos públicos que serán servidos por el servidor.
+  - `src/`: Contiene el código fuente de la aplicación.
+
+- `server/`: Contiene la aplicación backend creada con Node.js.
+  - `server.js`: Archivo principal del servidor.
+
+### Prerrequisitos
+- Node.js (versión 14 o superior)
+- npm o yarn
+
+### Instalación del Frontend
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/AndresGutierrezHurtado/pets-hoddies.git
+   ```
+2. Navega a la carpeta `client`:
+   ```bash
+   cd pets-hoddies/client
+   ```
+3. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
+4. Inicia la aplicación:
+   ```bash
+   npm run dev
+   ```
+
+### Instalación del Backend
+
+1. Navega a la carpeta `server`:
+   ```bash
+   cd pets-hoddies/server
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Inicia el servidor:
+   ```bash
+   npm start
+   ```
