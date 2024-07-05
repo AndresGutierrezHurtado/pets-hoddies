@@ -1,0 +1,17 @@
+# Reglas generales para todo el proyecto
+
+# Ignorar archivos generados por el sistema operativo
+.DS_Store
+
+# Ignorar archivos de configuración específicos del usuario
+.idea/
+.vscode/
+
+# Reglas específicas para la carpeta "client"
+client/node_modules/
+client/dist/
+
+# Reglas específicas para la carpeta "server"
+server/node_modules/
+server/database/
+server/build/
