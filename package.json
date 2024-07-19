@@ -1,0 +1,18 @@
+{
+    "name": "pets-hoddies",
+    "version": "1.0.0",
+    "author": "Andrés Gutiérrez Hurtado",
+    "description": "Este es un sistema de información diseñado para la venta de ropa para mascotas. El sistema incluye una interfaz de usuario desarrollada con React y Vite, y un servidor que maneja la lógica de negocio y la base de datos SQL con Node.js.",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "download": "npm install --prefix client && npm install --prefix server",
+        "dev": "npm run dev --prefix client",
+        "server": "npm run server --prefix server"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AndresGutierrezHurtado/pets-hoddies.git"
+    },
+    "keywords": [],
+    "license": "ISC"
+}
