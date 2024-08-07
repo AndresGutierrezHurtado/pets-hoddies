@@ -1,36 +1,8 @@
-const express = require("express");
-const multer = require("multer");
-const { createConnection } = require("mysql");
-const cors = require("cors");
-const bcrypt = require("bcrypt");
-const Jwt = require("jsonwebtoken");
+import { Router } from "express";
 
-const app = express();
-const secretKey = process.env.SECRET_KEY || "Andres-petshoddies-1033707596";
+const appRoutes = Router();
 
-// Configuración de la base de datos
-const db = createConnection({
-    host: process.env.DB_HOST || "localhost",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "",
-    database: process.env.DB_NAME || "pets_hoddies_bd",
-});
-
-// Conectar a la base de datos
-db.connect((err) => {
-    if (err) {
-        console.error("Error de conexión a la base de datos:", err);
-    } else {
-        console.log("Conexión exitosa a la base de datos");
-    }
-});
-
-app.use(cors());
-app.use(express.json()); // Añadido para parsear el cuerpo de la solicitud como JSON
-
-// -------------RUTAS----------------
-
-app.get("/productos", (req, res) => {
+appRoutes.get("/productos", (req, res) => {
     const sql = "SELECT * FROM productos";
 
     db.query(sql, (err, result) => {
@@ -43,9 +15,9 @@ app.get("/productos", (req, res) => {
     });
 });
 
-app.post("/addnewproduct", (req, res) => {
+appRoutes.post("/addnewproduct", (req, res) => {
     const sql =
-        "INSERT INTO productos (nombre, descripcion, precio, img, stock) VALUES (?, ?, ?, ?)";
+        "INSERT INTO productos (nombre, descripcion, precio, img, stock) VALUES (?, ?, ?, ?, ?)";
 
     db.query(
         sql,
@@ -61,7 +33,7 @@ app.post("/addnewproduct", (req, res) => {
     );
 });
 
-app.post("/deleteproduct", (req, res) => {
+appRoutes.post("/deleteproduct", (req, res) => {
     const id = req.body.id;
     const query = "DELETE FROM productos WHERE producto_id = ?";
 
@@ -75,7 +47,7 @@ app.post("/deleteproduct", (req, res) => {
     });
 });
 
-app.post("/product/profile", (req, res) => {
+appRoutes.post("/product/profile", (req, res) => {
     const id = req.body.id;
     const query = "SELECT * FROM productos WHERE producto_id = ?";
 
@@ -97,7 +69,7 @@ app.post("/product/profile", (req, res) => {
     });
 });
 
-app.post("/profile/product/update", (req, res) => {
+appRoutes.post("/profile/product/update", (req, res) => {
     const { id, name, description, stock, price } = req.body;
 
     const updateUserQuery =
@@ -118,12 +90,10 @@ app.post("/profile/product/update", (req, res) => {
                             .json({ error: "Error al obtener el producto actualizado" });
                     } else {
                         const updatedProduct = productResult[0];
-                        return res
-                            .status(200)
-                            .json({
-                                message: "Perfil de producto actualizado correctamente",
-                                product: updatedProduct,
-                            });
+                        return res.status(200).json({
+                            message: "Perfil de producto actualizado correctamente",
+                            product: updatedProduct,
+                        });
                     }
                 });
             } else {
@@ -144,7 +114,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/upload/image/product", upload.single("image"), (req, res) => {
+appRoutes.post("/upload/image/product", upload.single("image"), (req, res) => {
     const { id } = req.body;
     const pathProductImg = "/img/productos/" + id + ".jpg";
     const updateQuery = "UPDATE productos SET img = ? WHERE producto_id = ?";
@@ -167,7 +137,7 @@ app.post("/upload/image/product", upload.single("image"), (req, res) => {
 
 // SECCIÓN USUARIOS
 
-app.get("/usuarios", (req, res) => {
+appRoutes.get("/usuarios", (req, res) => {
     const sql = "SELECT * FROM usuarios";
 
     db.query(sql, (err, result) => {
@@ -180,7 +150,7 @@ app.get("/usuarios", (req, res) => {
     });
 });
 
-app.post("/continue/facebook", (req, res) => {
+appRoutes.post("/continue/facebook", (req, res) => {
     const { fullName, email, facebookId } = req.body;
 
     const firstName = fullName.split(" ")[0];
@@ -235,7 +205,7 @@ app.post("/continue/facebook", (req, res) => {
     });
 });
 
-app.post("/login", async (req, res) => {
+appRoutes.post("/login", async (req, res) => {
     const { username, contrasenainput } = req.body;
 
     const userQuery = "SELECT * FROM usuarios WHERE usuario = ?";
@@ -268,7 +238,7 @@ app.post("/login", async (req, res) => {
     });
 });
 
-app.post("/register", async (req, res) => {
+appRoutes.post("/register", async (req, res) => {
     const { nombre, username, email, contrasena, telefono, rol_id } = req.body;
 
     const existingUserQuery = "SELECT * FROM usuarios WHERE email = ?";
@@ -301,7 +271,7 @@ app.post("/register", async (req, res) => {
     });
 });
 
-app.post("/profile", (req, res) => {
+appRoutes.post("/profile", (req, res) => {
     const tokenHeader = req.headers["authorization"];
     const token = tokenHeader.split(" ")[1];
 
@@ -348,7 +318,7 @@ app.post("/profile", (req, res) => {
     });
 });
 
-app.post("/profile/user/update", async (req, res) => {
+appRoutes.post("/profile/user/update", async (req, res) => {
     const tokenHeader = req.headers["authorization"];
     const token = tokenHeader.split(" ")[1];
 
@@ -395,18 +365,14 @@ app.post("/profile/user/update", async (req, res) => {
                                 const newToken = Jwt.sign(tokenData, secretKey, {
                                     expiresIn: "5h",
                                 });
-                                return res
-                                    .status(200)
-                                    .json({
-                                        message: "Perfil de usuario actualizado correctamente",
-                                        token: newToken,
-                                    });
+                                return res.status(200).json({
+                                    message: "Perfil de usuario actualizado correctamente",
+                                    token: newToken,
+                                });
                             } else {
-                                return res
-                                    .status(200)
-                                    .json({
-                                        message: "Perfil de usuario actualizado correctamente",
-                                    });
+                                return res.status(200).json({
+                                    message: "Perfil de usuario actualizado correctamente",
+                                });
                             }
                         } else {
                             return res.status(404).json({ error: "Usuario no encontrado" });
@@ -418,7 +384,7 @@ app.post("/profile/user/update", async (req, res) => {
     });
 });
 
-app.post("/deleteuser", (req, res) => {
+appRoutes.post("/deleteuser", (req, res) => {
     const id = req.body.id;
     const query = "DELETE FROM usuarios WHERE usuario_id = ?";
 
@@ -432,9 +398,4 @@ app.post("/deleteuser", (req, res) => {
     });
 });
 
-const PORT = 3000;
-
-app.listen(PORT, () => {
-    console.clear();
-    console.log(`Servidor Express en http://localhost:${PORT}`);
-});
+export default appRoutes;
